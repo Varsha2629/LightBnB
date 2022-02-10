@@ -21,7 +21,7 @@ const getUserWithEmail = function (email) {
     .then(result => {
       return result.rows[0] || null;
     })
-    .catch(err => console.log(err.message));
+    .catch(err => err.message);
 
   // let user;
   // for (const userId in users) {
@@ -46,7 +46,7 @@ const getUserWithId = function (id) {
   .then(result => {
     return result.rows[0];
   })
-  .catch(err => console.log(err.message));
+  .catch(err => err.message);
 }
 
 /**
@@ -60,7 +60,7 @@ const addUser = function (user) {
   .then(result => {
     return result.rows;
   })
-  .catch(err => console.log(err.message));
+  .catch(err => err.message);
   // const userId = Object.keys(users).length + 1;
   // user.id = userId;
   // users[userId] = user;
@@ -76,7 +76,16 @@ const addUser = function (user) {
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function (guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+  // return getAllProperties(null, 2);
+  return pool
+  .query(`SELECT * FROM reservations
+  WHERE guest_id = $1
+  LIMIT $2
+  `, [guest_id, limit])
+  .then(result => {
+    return result.rows;
+  })
+  .catch(err => err.message);
 }
 
 
