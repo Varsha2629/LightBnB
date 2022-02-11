@@ -122,7 +122,10 @@ const getAllProperties = function (options, limit = 10) {
     queryString += `AND cost_per_night <= $${queryParams.length}`;
   }  
 
-
+  if(options.minimum_rating){
+    queryParams.push(Number(options.minimum_rating)) 
+    queryString += `AND rating >= $${queryParams.length}`;
+  }
   // 4
   queryParams.push(limit);
   queryString += `
